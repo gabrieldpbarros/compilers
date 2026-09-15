@@ -1,11 +1,9 @@
 %option noyywrap
 
-%
-{
+%{
     #include <stdio.h>
     int qtd_digitos = 0;
-}
-%
+}%
 
 %%
 [0-9] {
