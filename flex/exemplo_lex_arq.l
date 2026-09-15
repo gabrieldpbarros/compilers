@@ -3,7 +3,7 @@
 %{
     #include <stdio.h>
     int qtd_digitos = 0;
-}%
+%}
 
 %%
 [0-9] {
@@ -12,16 +12,23 @@
 }
 %%
 
-int main() {
-    //yy_scan_string("12343317891");
-    yyin = fopen("archives/exemplo_texto.txt", "r");
-    if (!yyin) {
-        perror("Arquivo nao encontrado");
-        return -1;
-    }
-    yylex();
+int main(int argc, char *argv[]) {
+    FILE *arch;
 
-    printf("Quantidade de digitos encontrada: %d", qtd_digitos);
+    if (argc > 1)
+        arch = fopen(argv[1], "r");
+    else 
+        arch = fopen("text/exemplo_texto.txt", "r");
+
+    if (!arch) {
+        perror("Arquivo nao encontrado");
+        return 1;
+    }
+
+    yyin = arch; 
+    yylex();
+    printf("Quantidade de digitos encontrada: %d\n", qtd_digitos);
+
     fclose(yyin);
 
     return 0;
