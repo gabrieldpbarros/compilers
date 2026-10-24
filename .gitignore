@@ -2,3 +2,9 @@
 !**/bin/.gitkeep
 **/out/*
 !**/out/.gitkeep
+
+bibliografia/
+materiais/
+
+# agentes
+AGENTS.md
