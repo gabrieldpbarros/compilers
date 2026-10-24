@@ -1,0 +1,14 @@
+#include <stdio.h>
+
+#define TURN 1
+
+int main(void) {
+    if (TURN == 1) {
+        printf("Hello, world!\n");
+    }
+    else {
+        printf("Bye, world!\n");
+    }
+
+    return 0;
+}
