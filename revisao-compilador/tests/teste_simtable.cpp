@@ -111,4 +111,6 @@ int main(int argv, char* argc[]) {
     
     tabela_simbolos::remove_escopo(pilha);
     tabela_simbolos::imprime_tabela_simbolos(pilha);
+
+    return 0;
 }
