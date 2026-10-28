@@ -1,5 +1,5 @@
 #ifndef ANALISADOR_SINTATICO
-#define ANALISADOr_SINTATICO
+#define ANALISADOR_SINTATICO
 
 namespace analisador_sintatico {
     
