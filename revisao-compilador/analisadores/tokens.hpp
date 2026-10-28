@@ -1,5 +1,6 @@
 #ifndef TOKENS
 #define TOKENS
+#include <string>
 
 typedef enum {
     ID,    // identificador     [A-Za-z_]([A-Za-z0-9_]*)
@@ -13,7 +14,30 @@ typedef enum {
     C_CHV, // fecha chaves      \}
     ATT,   // atribuicao        =
     COMP,  // comparacao        ==
-    STR    // string            "([caracter^(\\")]|\"|\n")*" | '([caracter^(\\')]|\'|\n')*'
-} Tokens;
+    STR,   // string            "([caracter^(\\")]|\"|\n")*" | '([caracter^(\\')]|\'|\n')*'
+    // PALAVRAS RESERVADAS
+    IF,
+    ELSE,
+    VOID,
+    BOOL,
+    UNSIGNED,
+    INT,
+    FLOAT,
+    DOUBLE,
+    CHAR,
+    RETURN,
+    PRINTF,
+} NomeToken;
+
+struct Lexema {
+    int string_index{};
+    NomeToken temp_token_name{};
+    std::string token_content{};
+};
+
+struct Token {
+    NomeToken name{};
+    std::string content{};
+};
 
 #endif
