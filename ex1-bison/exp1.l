@@ -22,7 +22,7 @@
 }
 "(" { return T_LPAR; }
 ")" { return T_RPAR; }
-"+" { return T_LMAIS; }
+"+" { return T_MAIS; }
 "-" { return T_MENOS; }
 "\n" { return T_NEWLINE; }
 %%

@@ -6,7 +6,7 @@
 extern int yylex();
 extern int yyparse();
 
-EXTERN *FILE yyin;
+extern *FILE yyin;
 
 void yyerror(const char* s);
 %}
@@ -22,7 +22,7 @@ void yyerror(const char* s);
 %token T_MAIS T_MENOS T_LPAR T_RPAR
 %token T_NEWLINE
 
-%left T_MAIS, T_MENOS
+%left T_MAIS T_MENOS
 
 %type<fval> exp
 %type<fval> fator
@@ -34,7 +34,12 @@ calculo: // vazio (epsilon)
         | calculo linha // corpo da regra
         ; // finalização da regra
 
-linha:  exp T_NEWLINE
+linha:  exp {
+            printf("Resultado: %f\n", $1);
+        }
+        | exp T_NEWLINE {
+            printf("Resultado: %f\n", $1);
+        }
         | T_NEWLINE // consumo de linhas vazias
         ;
 
@@ -73,6 +78,6 @@ int main(int argc, char** argv) {
 }
 
 void yyerror(const char* s) {
-    fprint(stderr, "Parse error, %s\n", s);
+    fprintf(stderr, "Parse error, %s\n", s);
     exit(1);
 }
