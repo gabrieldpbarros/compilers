@@ -19,11 +19,12 @@ typedef enum {
     C_CHV,    // fecha chaves      \}
     ATT,      // atribuicao        \=
     COMP,     // comparacao        \=\=
-    STR,      // string            "([caracter^(\\")]|\"|\n")*" | '([caracter^(\\')]|\'|\n')*'
+    STR,      // string            "([caracter^("\)]|\[caracter])*" | '([caracter^('\)]|\[caracter])*'
     END,      // fim da cadeia
     // PALAVRAS RESERVADAS
     IF,
     ELSE,
+    WHILE,
     VOID,
     BOOL,
     UNSIGNED,
