@@ -2,7 +2,7 @@
 #include "../tabela_simbolos/tabela_simbolos.hpp"
 #include <iostream>
 
-int main(int argv, char* argc[]) {
+int main(int argc, char* argv[]) {
     tabela_simbolos::SimboloEscopo simbolo_generico{};
     std::vector<tabela_simbolos::SimboloEscopo> tabela_generica{};
     auto pilha = tabela_simbolos::inicializa_pilha_simbolos();

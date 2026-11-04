@@ -4,6 +4,7 @@
 #include <string_view>
 
 namespace analisador_lexico {
+    bool eh_sinalizador_string(char caractere);
     bool eh_caractere_string(char caractere);
     bool eh_alfabetico(char caractere);
     bool eh_numero(char caractere);

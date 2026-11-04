@@ -1,15 +1,29 @@
 #include "analisador_lexico.hpp"
 #include "tokens.hpp"
 #include <iostream>
+#include <stack>
 #include <string_view>
 
 namespace analisador_lexico {
-  bool eh_alfabetico(char caractere) {
-    if ((caractere >= 'a' && caractere <= 'z') ||
-        (caractere >= 'A' && caractere <= 'Z'))
-        return true;
-    return false;
-  }
+    bool eh_sinalizador_string(char caractere) {
+        if(caractere == '\'' || caractere == '\"')
+            return true;
+        return false;
+    }
+
+    bool eh_caractere_string(char caractere) {
+        if((caractere >= '!' && caractere <= '~') ||
+            caractere == ' ')
+            return true;
+        return false;
+    }
+
+    bool eh_alfabetico(char caractere) {
+      if ((caractere >= 'a' && caractere <= 'z') ||
+          (caractere >= 'A' && caractere <= 'Z'))
+          return true;
+      return false;
+    }
 
     bool eh_numero(char caractere) {
         if (caractere >= '0' && caractere <= '9') return true;
@@ -95,7 +109,10 @@ namespace analisador_lexico {
     }
 
     void _print_token(Token token) {
-        std::cout << "<" << token_to_string(token) << ", " << token.content << "> ";
+        std::cout << "<" << token_to_string(token);
+        if (token.content.length() > 0) 
+            std::cout << ", " << token.content;
+        std::cout << "> ";
     }
 
     void check_reserved_words(Lexema* lexema) {
@@ -133,6 +150,9 @@ namespace analisador_lexico {
                 break;
             case 'r':
                 if (lexema->token_content == "return") token = NomeToken::RETURN;
+                break;
+            case 'p':
+                if (lexema->token_content == "printf") token = NomeToken::PRINTF;
                 break;
         }
 
@@ -268,6 +288,50 @@ namespace analisador_lexico {
             if (!eh_fim(tamanho_cadeia, indice_atual) && 
                 cadeia.at(indice_atual) == '=')
                 lexema->token_content.push_back(cadeia.at(indice_atual++));
+        }
+
+        // possivel string: "([caracter^("\)]|\[caracter])*" | '([caracter^('\)]|\[caracter])*'
+        else if (eh_sinalizador_string(cadeia.at(indice_atual))) {
+            lexema->string_index    = {indice_atual};
+            lexema->temp_token_name = {NomeToken::STR};
+            lexema->token_content.push_back(cadeia.at(indice_atual)); // nao deve incrementar
+
+            // monta uma pilha que espera outra aspa
+            std::stack<char> pilha_aspas{};
+            pilha_aspas.push(cadeia.at(indice_atual++));
+
+            for(;
+                !pilha_aspas.empty() &&
+                !eh_fim(tamanho_cadeia, indice_atual) &&
+                eh_caractere_string(cadeia.at(indice_atual));
+                indice_atual++
+            ) {
+                char caractere_atual = cadeia.at(indice_atual);
+                // verifica se a string encerrou
+                if (caractere_atual == pilha_aspas.top()) {
+                    pilha_aspas.pop();
+                    lexema->token_content.push_back(cadeia.at(indice_atual));
+                }
+
+                if (pilha_aspas.size() > 0) {
+                    // [caracter^([ASPAS]\)]
+                    if (caractere_atual != '\\') {
+                        lexema->token_content.push_back(cadeia.at(indice_atual));
+                    }
+                    // \[caracter]
+                    else if (indice_atual + 1 < tamanho_cadeia && 
+                            eh_caractere_string(cadeia.at(indice_atual + 1))){
+                        lexema->token_content.push_back(cadeia.at(indice_atual++));
+                        lexema->token_content.push_back(cadeia.at(indice_atual));
+                    }
+                }
+            }
+
+            if (!pilha_aspas.empty()) {
+                throw std::runtime_error(
+                    std::string("STRING NAO FECHADA")
+                );
+            }
         }
 
         if (lexema->temp_token_name == NomeToken::ID)

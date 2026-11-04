@@ -1,0 +1,13 @@
+x = 1 + 2;
+if (x) { return 0; }
+while (i == 10) { x / 2; }
+if
+int x2;
+float a = 1.7;
+ifx
+""
+'texto'
+printf("Hello, world!\n");
+printf("a\"b");
+printf('a\'b');
+@
